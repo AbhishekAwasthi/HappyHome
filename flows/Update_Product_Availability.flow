@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <name>Quote_Line_Item_Status_Decision</name>
+        <label>Quote Line Item Status Decision</label>
+        <locationX>446</locationX>
+        <locationY>335</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Status_Draft</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Draft</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Product_Status_available</targetReference>
+            </connector>
+            <label>Status Draft</label>
+        </rules>
+        <rules>
+            <name>Status_Review</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Review</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Product_Status_Review</targetReference>
+            </connector>
+            <label>Status Review</label>
+        </rules>
+        <rules>
+            <name>Status_Finalised</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Finalised</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Product_Status_Sold_Out</targetReference>
+            </connector>
+            <label>Status Finalised</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Update Product Status {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update Product Availability</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Product_Status_available</name>
+        <label>Update Product Status available</label>
+        <locationX>50</locationX>
+        <locationY>455</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Product__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Availability__c</field>
+            <value>
+                <stringValue>Available</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Product__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Product_Status_Review</name>
+        <label>Update Product Status Review</label>
+        <locationX>314</locationX>
+        <locationY>455</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Product__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Availability__c</field>
+            <value>
+                <stringValue>In Negotiation</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Product__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Product_Status_Sold_Out</name>
+        <label>Update Product Status Sold Out</label>
+        <locationX>578</locationX>
+        <locationY>455</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Product__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Availability__c</field>
+            <value>
+                <stringValue>Sold out</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Product__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Quote_Line_Item_Status_Decision</targetReference>
+        </connector>
+        <filterFormula>ISNEW() || ISCHANGED({!$Record.Status__c})</filterFormula>
+        <object>Quote_Item__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

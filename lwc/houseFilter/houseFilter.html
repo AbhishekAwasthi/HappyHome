@@ -1,0 +1,53 @@
+<template>
+    <lightning-card title="Filters" icon-name="standard:calibration">
+        <div class="slds-var-m-horizontal_medium">
+            <lightning-input
+                label="Search House"
+                type="search"
+                onchange={handleSearchKeyChange}
+            ></lightning-input>
+            <lightning-input
+                label="Search Locality / Zip"
+                type="search"
+                onchange={handleSearchLocalityChange}
+            ></lightning-input>
+            <section>
+                <lightning-slider
+                    label="Max Price"
+                    step="100"
+                    min="0"
+                    max="10000"
+                    value={maxPrice}
+                    onchange={handleMaxPriceChange}
+                ></lightning-slider>
+            </section>
+            <section>
+                <h1>Type</h1>
+                <template lwc:if={typeOfHouses.data}>
+                    <template
+                        for:each={typeOfHouses.data.values}
+                        for:item="typeOfHouse"
+                    >
+                        <lightning-input
+                            key={typeOfHouse.value}
+                            label={typeOfHouse.label}
+                            data-filter="typeOfHouses"
+                            data-value={typeOfHouse.value}
+                            type="checkbox"
+                            checked
+                            onchange={handleCheckboxChange}
+                        ></lightning-input>
+                    </template>
+                </template>
+                <template lwc:if={typeOfHouses.error}>
+                    <c-error-panel
+                        type="inlineMessage"
+                        friendly-message="Error loading type of Houses"
+                        errors={typeOfHouses.error}
+                    ></c-error-panel>
+                </template>
+            </section>
+            
+        </div>
+    </lightning-card>
+</template>

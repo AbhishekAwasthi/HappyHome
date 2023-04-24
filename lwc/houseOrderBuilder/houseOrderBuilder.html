@@ -1,0 +1,27 @@
+<template>
+    <div class="content">
+        <template lwc:if={quoteItems}>
+            <header class="slds-text-heading_small">
+                <div>
+                    Quote Total:
+                    <lightning-formatted-number value={quotePrice} format-style="currency" currency-code="USD"
+                        class="quote-total"></lightning-formatted-number>
+                </div>
+                <div class="right">Total Items: {quoteQuantity}</div>
+            </header>
+            <div class="drop-zone slds-var-p-around_x-small" ondrop={handleDrop} ondragover={handleDragOver}>
+                <template for:each={quoteItems} for:item="quoteItem">
+                    <c-quote-item-tile key={quoteItem.Id} quote-item={quoteItem} class="slds-var-m-around_x-small"
+                        onquoteitemchange={handleQuoteItemChange} onquoteitemdelete={handleQuoteItemDelete}>
+                    </c-quote-item-tile>
+                </template>
+                <template lwc:if={hasNoQuoteItems}>
+                    <c-placeholder message="Drag products here to add items to the quote"></c-placeholder>
+                </template>
+            </div>
+        </template>
+        <template lwc:if={error}>
+            <c-error-panel errors={error}></c-error-panel>
+        </template>
+    </div>
+</template>

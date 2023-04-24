@@ -1,0 +1,48 @@
+<template>
+    <lightning-card icon-name="standard:apex_plugin">
+        <template lwc:if={recordId}>
+            <span slot="title">{productName}</span>
+            <lightning-button-icon
+                icon-name="utility:expand_alt"
+                slot="actions"
+                onclick={handleNavigateToRecord}
+                ><label>Open Record</label></lightning-button-icon
+            >
+            <div class="slds-var-m-horizontal_medium">
+                <img
+                    lwc:if={productPictureUrl}
+                    src={productPictureUrl}
+                    class="product"
+                    alt="Product picture"
+                />
+                <lightning-record-view-form
+                    record-id={recordId}
+                    onload={handleRecordLoaded}
+                    object-api-name="Product__c"
+                    density="compact"
+                >
+                    <lightning-output-field
+                        field-name={typeOfhousesField}
+                    ></lightning-output-field>
+                    <lightning-output-field
+                        field-name={zipPostalCodeField}
+                    ></lightning-output-field>
+                    <lightning-output-field
+                        field-name={locationField}
+                    ></lightning-output-field>
+
+              
+                    <lightning-output-field
+                        field-name={descriptionField}
+                    ></lightning-output-field>
+                </lightning-record-view-form>
+            </div>
+        </template>
+
+        <template lwc:else>
+            <c-placeholder
+                message="Select a house to see details"
+            ></c-placeholder>
+        </template>
+    </lightning-card>
+</template>

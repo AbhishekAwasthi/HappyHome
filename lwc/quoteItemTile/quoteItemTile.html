@@ -1,0 +1,49 @@
+<template>
+    <div class="content">
+        <img
+            src={quoteItem.Product__r.Picture_URL__c}
+            class="product slds-align_absolute-center"
+            alt="Product picture"
+        />
+        <p class="title slds-align_absolute-center">
+            {quoteItem.Product__r.Name}
+        </p>
+        <p class="slds-align_absolute-center">
+            Inital Price:
+            <lightning-formatted-number
+                value={quoteItem.Product__r.Price__c}
+                format-style="currency"
+                currency-code="USD"
+            ></lightning-formatted-number>
+        </p>
+        <div class="form slds-align_absolute-center">
+            <lightning-input
+                onchange={handleFormChange}
+                value={quoteItem.Price__c}
+                data-field-name="Price__c"
+                label="Price"
+                type="number"
+                formatter="currency"
+                class="price"
+            ></lightning-input>
+        </div>
+        <div class="action-buttons slds-align_absolute-center">
+            <lightning-button-icon
+                onclick={deleteQuoteItem}
+                icon-name="utility:delete"
+                variant="bare"
+                size="large"
+                class="delete-button"
+            ></lightning-button-icon>
+            <template lwc:if={isModified}>
+                <lightning-button-icon
+                    onclick={saveQuoteItem}
+                    icon-name="utility:check"
+                    variant="bare"
+                    size="large"
+                    class="save-button"
+                ></lightning-button-icon>
+            </template>
+        </div>
+    </div>
+</template>
